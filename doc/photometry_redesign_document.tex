@@ -3,21 +3,55 @@
 \section{Frequently Desired Operations}
 
 \begin{itemize}
-    \item Find fluxes in a list of transmission bands and times of a large number of SEDs. The wavelengths of SEDS may be at different grids. The use case is to find the fluxes/ mags of every object of a certain class (galaxy/AGN/SN) on a focal plane. Since these might be at different redshifts, the wavelength grid could be different), unless we store that at the top of the atmosphere on the same wavelength grid.
+    \item Find fluxes in a list of transmission bands of a large number of SEDs. The wavelengths of SEDS may be at different grids. The use case is to find the fluxes/ mags of every object of a certain class (galaxy/AGN/SN) on a focal plane. Since these might be at different redshifts, the wavelength grid could be different), unless we store that at the top of the atmosphere on the same wavelength grid.
         So we are looking at 
-\begin{verbatim}
-# Fix all SEDs to the bandpass wavelength grid
+    \begin{verbatim}
+        # Fix all SEDs to the wavelength grid of the bandpass system
 bandpassdict.flux([sed0, sed1, sed2, sed3], bandpassindices=['u', 'g', 'r', 'i'])
-\end{verbatim}
-where the length of bandpassindices matches the length of the bandpass string
-    \item Transients: The focal plane will have a large number of transients 
+    \end{verbatim}
+where the length of bandpassindices matches the length of the bandpass string.
+We should also allow for the case, where the flux for each sed is evaluated in
+multiple bands (for example in a SDSS like case):
+    \begin{verbatim}
+        # Fix all SEDs to the wavelength grid of the bandpass system
+bandpassdict.flux([sed0, sed1, sed2, sed3], bandpassindices=[['u', 'g', 'r', 'i'],
+                                                             ['u', 'g', 'r', 'i', 'z'],
+
+                                                             ['u', 'g', 'r', 'i', 'z'],
+
+                                                             ['u', 'g', 'r', 'i', 'z']])
+    \end{verbatim}
+    \item Transients: The focal plane will have a number of transients of each class. When doing a set of instance catalogs at different times at the same position, rather than working instance catalog by instance catlog, it might be useful to query all the objects in the field of view and obtain the flux values for the SEDS at different times and fill the instance catalogs simultaneously. While this could be limited by memory issues, this has the potential of speeding up the calculations if the transient SEDs are calculated through a causal calculation.
+        \begin{verbatim}
+            # Fix all SEDS to the wavelength grid of the SED
+for Transientsed in sedList:
+    TransientSed.setModelParams.fromCatalog()
+    Transientsed.flux([t0, t1, t2, t3], bands=['u', 'g', 'r', 'i', 'z'])
+        \end{verbatim}
+        \begin{verbatim}
+Class TransientSed(object):
+    def __init__(self, modelParams):
+        ...
+    def specificFlux(self, times):
+        # sed = f_\lambda (dE/d\lambda) at the top of the atmosphere
+        # observer frame time
+        return list of sed(times)
+    def flux(self, bandpassDict, time, bandpassInd):
+        return bandpassdict.flux(self.specificFlux(times) , bandpassdict,
+                                  bandpassind)
+        \end{verbatim}
+
+    \item Noisy spectrum 
+    \item Zero points and other magsystems 
 \end{itemize}
 
-\section{Gloassary: Definitions, Conventions and Equations}
+\section{Glossary: Definitions, Conventions and Equations}
 
 \subsection{Transmission Functions} $T(\lambda)$ 
 
-\subsection{Specific Flux} 
+\subsection{Specific Flux:} $f_{\lambda} = \frac{dE}{d\lambda}$ or 
+$f_{\nu} = \frac{dE}{d\nu},$ we can write $f_\nu$ as a function of wavelength:
+$f_\nu(\lambda) = f_{\nu}(\nu=c/\lambda) c \frac{d\lambda}{\lambda^2}$
 
 \subsection{Flux} As it is measured by our CCDs, the important quantity is 
 number of photons per unit area per unit time. The units are thus
@@ -25,23 +59,72 @@ $cm^{-2} s^{-1}$. A second unit of interest is the ratio of this quantity for ou
 \begin{equation}
 \rm{Flux} = \int \frac{dE(\lambda)}{d\lambda} T(\lambda)
     \frac{\lambda d\lambda}{hc}
+    \label{eqn:FluxFromflambda}
 \end{equation}
 We can also write this as 
 \begin{equation}
-    \rm{Flux} = \int \frac{dE(\lambda)}{d\nu} T(\lambda) \frac{d\nu}{h\nu}
+    \rm{Flux} = \int \frac{dE(\lambda)}{d\nu} T(\lambda) \frac{d\lambda}{h\lambda}
+    \label{eqn:FluxFromfnu}
 \end{equation}
 \subsection{Magnitude System}
 
 \subsection{Magnitudes}
 
 \section{Data Structures and PseudoCode}
-
-\subsection{Transmission Functions} 
+\subsection{Transmission Functions: BandPass} 
 \begin{itemize}
     \item The main class of objects should be a Bandpass class, and a Bandpassdict class. It is expected that the bandpassdict class will encapsulate all the bands of a survey and will be the most commonly used object. The user should try to obtain the appropriate bandpassdict and use it.
     \item use a registry to be able to refer to the bandpasses and bandpassdictsthrough strings (connected to next point)
     \item Use builtins for well known transmission functions so that instantiation is unnecessary, along with the ability to add transmission functions through an instantiation of bandpass/bandpassdict objects
     \item Not really throught about: How to extend bandpassdict to heterogeneous transmission function models?
 \end{itemize}
-\subsubsection{Attributes of BandPass}
+\textbf{Possible Attributes of BandPass}
+\begin{itemize}
+    \item Names: unique string identifying bandpass in registry ? This will allow these objects to be loaded via builtins
+    \item bestwavelen : large wavelen range with fine grid 
+    \item wavelen: Wavelength grid, used for flux/mag calculation, usually smaller than bestwavelen
+    \item minWavelen, maxWavelen : To be used to check if flux can be calculated at all for a Sed
+    \item Sb: Transmission  probabilities
+    \item bestSB: Transmission probabilities over bestwavelen
+    \item units as metadata or maybe our current documentation is good enough
+    \item phi : Normalized transmission for multiplying fnu 
+    \item flux of standard SED in band: This frees us up to calculate in flambda or fnu. So if we read in the SED in flambda, we don't need to convert the entire SED to fnu just for flux evaluation. The calculation is just Flux 
+        as calculated by \ref{eqn:FluxFromflambda}, \ref{eqn:FluxFromfnu}. 
+\end{itemize}
+\textbf{Possible methods of BandPass}
+\begin{itemize}
+    \item griddedFlux(SedgriddedtoBP, zeroPoint=None, MagSys='ab', wavelen='wavelen') 
+        single sed, no checks about gridding, but potentially out of band if bestwavelen is used in place of wavelen using wavelen_min, wavelen_max criteria
+        if zeroPoint is None, return is on units of $num/cm^2/sec$, if zeroPoint is a number, the return is $Flux/ Fs * 10^{0.4 zp}$
+        if magsystem is not 'ab', we would have to evaluate the flux in the bands. (This is new anyway, we do not have non-ab mags in our system yet, we dont have to do this))
+    \item Flux(Sed, zeroPoint=None, MagSys='ab', wavelen='wavelen', regrid='sed') 
+        This is what we already have (moduly zeropt, Magsys)
+        Check wavelen limits, if outside return None  if OK
+        Check gridding, if not same, interpolate SED unless regrid='bp', store in copy and use to perform calculations. We should not be using this very often,
+       unless we have a very noisy sed, and feel that it is more appropriate to
+       resample the bandpass 
+   \item  ManyFluxCalc(SedList, zeroPoint=None, MagSys='ab', wavelen='wavelen', regrid='sed')
+       UseCase: SedList is quite homogeneous, and has been set to the same wavelength grid, but can have different min_wavelen, max wavelens.  
+
+\end{itemize}      
+\subsection{BandPassDict}
+    Orderded dict of BandPass Objects, so that we can refer to a particular band in terms of both indices and strings.
+\subsubsection{Possible Methods:}
+ \begin{itemize}
+     \item Construction: using __init__ passing in the arrays of wavelen, sB in order and providing string names. with .fromThroughputsDir() method. For the most frequently used (eg. LSST) we should use a registry and builtins so that the code 'knows' "LSST" bandpasses. then it should be possible to construct the correponding BandPassDict as :
+\begin{verbatim}
+LSSTBP = BandPassDict('LSST')
+\end{verbatim}
+\item Flux for SedList :
+    FluxesForSeds(SedList, BandList, zp, magsys)
+    BandList can be a list of indices[0, 1, 2, 3] or strings ['u', 'g', 'r', 'i']
+    SedList is an instance of Sed.
+    zp should be None or an array
+    the length of SedList, BandList and zp, should match
+    Would be interesting if BandList could be a list of lists
+    
+\end{itemize}
+
+\subsection{SED}
+\subsection{SEDList}
 \end{document}
