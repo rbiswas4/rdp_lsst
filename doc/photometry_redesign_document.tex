@@ -1,0 +1,47 @@
+\documentclass{article}[12pt]
+\begin{document}
+\section{Frequently Desired Operations}
+
+\begin{itemize}
+    \item Find fluxes in a list of transmission bands and times of a large number of SEDs. The wavelengths of SEDS may be at different grids. The use case is to find the fluxes/ mags of every object of a certain class (galaxy/AGN/SN) on a focal plane. Since these might be at different redshifts, the wavelength grid could be different), unless we store that at the top of the atmosphere on the same wavelength grid.
+        So we are looking at 
+\begin{verbatim}
+# Fix all SEDs to the bandpass wavelength grid
+bandpassdict.flux([sed0, sed1, sed2, sed3], bandpassindices=['u', 'g', 'r', 'i'])
+\end{verbatim}
+where the length of bandpassindices matches the length of the bandpass string
+    \item Transients: The focal plane will have a large number of transients 
+\end{itemize}
+
+\section{Gloassary: Definitions, Conventions and Equations}
+
+\subsection{Transmission Functions} $T(\lambda)$ 
+
+\subsection{Specific Flux} 
+
+\subsection{Flux} As it is measured by our CCDs, the important quantity is 
+number of photons per unit area per unit time. The units are thus
+$cm^{-2} s^{-1}$. A second unit of interest is the ratio of this quantity for our source to that of a standard source as defined by the Magnitude System.
+\begin{equation}
+\rm{Flux} = \int \frac{dE(\lambda)}{d\lambda} T(\lambda)
+    \frac{\lambda d\lambda}{hc}
+\end{equation}
+We can also write this as 
+\begin{equation}
+    \rm{Flux} = \int \frac{dE(\lambda)}{d\nu} T(\lambda) \frac{d\nu}{h\nu}
+\end{equation}
+\subsection{Magnitude System}
+
+\subsection{Magnitudes}
+
+\section{Data Structures and PseudoCode}
+
+\subsection{Transmission Functions} 
+\begin{itemize}
+    \item The main class of objects should be a Bandpass class, and a Bandpassdict class. It is expected that the bandpassdict class will encapsulate all the bands of a survey and will be the most commonly used object. The user should try to obtain the appropriate bandpassdict and use it.
+    \item use a registry to be able to refer to the bandpasses and bandpassdictsthrough strings (connected to next point)
+    \item Use builtins for well known transmission functions so that instantiation is unnecessary, along with the ability to add transmission functions through an instantiation of bandpass/bandpassdict objects
+    \item Not really throught about: How to extend bandpassdict to heterogeneous transmission function models?
+\end{itemize}
+\subsubsection{Attributes of BandPass}
+\end{document}
