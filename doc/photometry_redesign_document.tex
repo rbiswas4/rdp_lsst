@@ -1,4 +1,5 @@
 \documentclass{article}[12pt]
+\usepackage{url}
 \begin{document}
 \section{Frequently Desired Operations}
 
@@ -47,7 +48,7 @@ Class TransientSed(object):
 
 \section{Glossary: Definitions, Conventions and Equations}
 
-\subsection{Transmission Functions} $T(\lambda)$ 
+\subsection{Transmission Functions} $T(\lambda)$ The transmission functions describing bandpasses. There are two conventions in this. We should try to support both: \url{https://github.com/sncosmo/sncosmo/issues/111} 
 
 \subsection{Specific Flux:} $f_{\lambda} = \frac{dE}{d\lambda}$ or 
 $f_{\nu} = \frac{dE}{d\nu},$ we can write $f_\nu$ as a function of wavelength:
@@ -94,7 +95,7 @@ We can also write this as
 \textbf{Possible methods of BandPass}
 \begin{itemize}
     \item griddedFlux(SedgriddedtoBP, zeroPoint=None, MagSys='ab', wavelen='wavelen') 
-        single sed, no checks about gridding, but potentially out of band if bestwavelen is used in place of wavelen using wavelen_min, wavelen_max criteria
+        single sed, no checks about gridding, but potentially out of band if bestwavelen is used in place of wavelen using wavelen\_min, wavelen\_max criteria
         if zeroPoint is None, return is on units of $num/cm^2/sec$, if zeroPoint is a number, the return is $Flux/ Fs * 10^{0.4 zp}$
         if magsystem is not 'ab', we would have to evaluate the flux in the bands. (This is new anyway, we do not have non-ab mags in our system yet, we dont have to do this))
     \item Flux(Sed, zeroPoint=None, MagSys='ab', wavelen='wavelen', regrid='sed') 
@@ -104,14 +105,14 @@ We can also write this as
        unless we have a very noisy sed, and feel that it is more appropriate to
        resample the bandpass 
    \item  ManyFluxCalc(SedList, zeroPoint=None, MagSys='ab', wavelen='wavelen', regrid='sed')
-       UseCase: SedList is quite homogeneous, and has been set to the same wavelength grid, but can have different min_wavelen, max wavelens.  
+       UseCase: SedList is quite homogeneous, and has been set to the same wavelength grid, but can have different wavelen\_min,  wavelen\_max valuess.  
 
 \end{itemize}      
 \subsection{BandPassDict}
     Orderded dict of BandPass Objects, so that we can refer to a particular band in terms of both indices and strings.
 \subsubsection{Possible Methods:}
  \begin{itemize}
-     \item Construction: using __init__ passing in the arrays of wavelen, sB in order and providing string names. with .fromThroughputsDir() method. For the most frequently used (eg. LSST) we should use a registry and builtins so that the code 'knows' "LSST" bandpasses. then it should be possible to construct the correponding BandPassDict as :
+     \item Construction: using \_\_init\_\_ passing in the arrays of wavelen, sB in order and providing string names. with .fromThroughputsDir() method. For the most frequently used (eg. LSST) we should use a registry and builtins so that the code 'knows' "LSST" bandpasses. then it should be possible to construct the correponding BandPassDict as :
 \begin{verbatim}
 LSSTBP = BandPassDict('LSST')
 \end{verbatim}
