@@ -23,6 +23,11 @@ If integrating this ```Bandpass``` over an ```Sed``` with a region of non-overla
 
 ##Member methods
 
+###__init___(wavelen, sb)
+####Arguments
+- ```wavelen``` -- a numpy array containing the wavelength grid in nanometers
+- ```sb``` -- a numpy array containing the probability of a photon at a given wavelength being detected.
+
 
 
 #Sed class
