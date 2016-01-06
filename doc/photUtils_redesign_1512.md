@@ -40,21 +40,21 @@ The minimum value of ```sb``` that must be present at a value of ```wavelen``` f
 This will be a class method so that it can be called without instantiating ```Bandpass``` first.
 
 ####Arguments
--```filename``` -- a string denoting the name of the throughput file to be read
+- ```filename``` -- a string denoting the name of the throughput file to be read
 
 ####Results
--reads in ```filename```, expecting two columns: wavelength in nanometers and sb as a function of wavelength.
--returns an intantiation of ```Bandpass```
+- reads in ```filename```, expecting two columns: wavelength in nanometers and sb as a function of wavelength.
+- returns an intantiation of ```Bandpass```
 
 ###```__mul__(other)```
 
 ####Arguments
--```other``` -- another ```Bandpass```
+- ```other``` -- another ```Bandpass```
 
 ####Results
--multiplies together two ```Bandpasses``` by resampling the ```Bandpasses``` onto the finest ```wavelen``` grid that can accommodate both and multiplying their ```sb``` arrays together
--Returns a new ```Bandpass``` instantiation that is the result of multiplying the two ```Bandpasses``` by each other.
--Raise an exception of there is a region of non-overlap in the two ```Bandpass```es ```wavelen``` arrays.  The non-overlap region must contain ```sb```>```_threshold``` to actually raise an exception.
+- multiplies together two ```Bandpasses``` by resampling the ```Bandpasses``` onto the finest ```wavelen``` grid that can accommodate both and multiplying their ```sb``` arrays together
+- Returns a new ```Bandpass``` instantiation that is the result of multiplying the two ```Bandpasses``` by each other.
+- Raise an exception of there is a region of non-overlap in the two ```Bandpass```es ```wavelen``` arrays.  The non-overlap region must contain ```sb```>```_threshold``` to actually raise an exception.
 
 #Sed class
 
