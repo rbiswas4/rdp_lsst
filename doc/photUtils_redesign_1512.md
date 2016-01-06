@@ -27,6 +27,7 @@ If integrating this ```Bandpass``` over an ```Sed``` with a region of non-overla
 ####Arguments
 - ```wavelen``` -- a numpy array containing the wavelength grid in nanometers
 - ```sb``` -- a numpy array containing the probability of a photon at a given wavelength being detected.
+
 ####Results
 - automatically set ```_ab_norm```
 
