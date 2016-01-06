@@ -12,6 +12,9 @@ The throughput curve as a function of ```wavelen```.  This will be the probabili
 ###_work_wavelen
 Initialized as ```None```.  Whenever ```wavelen``` needs to be resampled to match an ```Sed```, the resampled ```wavelen``` will be stored here.  That way, the original throughput information is not lost.
 
+###_work_sb
+Initialized as ```None```.  Whenever ```wavelen``` needs to be resampled to match an ```Sed```, the resampled ```sb``` will be stored here.  That way, the original throughput information is not lost.
+
 ##Member methods
 
 
