@@ -69,7 +69,7 @@ This will be a class method so that it can be called without instantiating ```Ba
 
 ###```_updateWorkArrays(self, input_wavelen)```
 ####Arguments
-- ```input_wavelen``` -- a wavength grid in nanometers (i.e. a numpy array)
+- ```input_wavelen``` -- a wavelength grid in nanometers (i.e. a numpy array)
 
 ####Results
 - Check to see if ```self._work_wavelen``` matches ```input_wavelen```.  If it does, do nothing.
