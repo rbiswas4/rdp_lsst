@@ -56,7 +56,7 @@ This will be a class method so that it can be called without instantiating ```Ba
 - Returns a new ```Bandpass``` instantiation that is the result of multiplying the two ```Bandpasses``` by each other.
 - Raise an exception of there is a region of non-overlap in the two ```Bandpass```es ```wavelen``` arrays.  The non-overlap region must contain ```sb```>```_threshold``` to actually raise an exception.
 
-###```readThroughputList(fileNameList)
+###```readThroughputList(fileNameList)```
 This will be a class method so that it can be called without instantiating ```Bandpass``` first.
 
 ####Arguments
