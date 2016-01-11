@@ -36,7 +36,6 @@ The minimum value of ```sb``` that must be present at a value of ```wavelen``` f
 ####Results
 - automatically set ```_ab_norm```
 
-
 ###```readThroughput(filename)```
 This will be a class method so that it can be called without instantiating ```Bandpass``` first.
 
