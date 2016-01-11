@@ -67,12 +67,20 @@ This will be a class method so that it can be called without instantiating ```Ba
 - Multiply the resutling ```Bandpass```es together.
 - Return the ```Bandpass``` that is the product of all of the ```Bandpass```es specified by the files in ```fileNameList```.
 
+###```_updateWorkArrays(self, input_wavelen)```
+####Arguments
+- ```input_wavelen``` -- a wavength grid in nanometers (i.e. a numpy array)
+
+####Results
+- Check to see if ```self._work_wavelen``` matches ```input_wavelen```.  If it does, do nothing.
+- If ```self._work_wavelen``` does not match ```input_wavelen```, resample ```self._wavelen``` and ```self._sb``` to match ```input_wavelen``` and store the sresults in ```self._work_wavelen``` and ```self._work_sb```.
+
 ###```calcFluxAB(self, inputSed)```
 ####Arguments
 - ```inputSed``` -- an instantiation of ```Sed```
 
 ####Results
-- Check to see if ```_work_wavelen``` matches ```inputSed._wavelen```.  If it does not, resample ```_wavelen``` and ```_sb``` to match ```inputSed._wavelen``` and store the results in ```_work_wavelen```, ```_work_sb```.
+- Call ```self._updateWorkArrays(inputSed._wavelen)```
 - Integrate ```inputSed._fnu*_work_sb/_work_wavelen``` over ```_work_wavelen``` and divide by ```_ab_norm``` to calculate the AB flux of ```inputSed``` in this ```Bandpass```.
 - Return the resutling AB flux.  The units of this flux are `maggies`.
 
@@ -90,7 +98,7 @@ This will be a class method so that it can be called without instantiating ```Ba
 - ```photParams``` -- an instantiation of the ```PhotometricParameters``` class carrying data about the photometric response of the instrument.
 
 ####Results
-- Check to see if ```_work_wavelen``` matches ```inut.Sed._wavelen```.  If it does not, resample ```_wavelen``` and ```_sb``` to match ```inputSed._wavelen``` and store the results in ```_work_wavelen```, ```_work_sb```.
+- Call ```self._updateWorkArrays(inputSed._wavelen)```
 - Integrate ```inputSed._fnu/(_work_wavelen*_work_sb)``` over ```_work_wavelen``` and multiply by constants to calculate the number of ADU counts resulting from observing ```inputSed``` through the current ```Bandpass```.
 - Return the calculated number of ADU.
 
