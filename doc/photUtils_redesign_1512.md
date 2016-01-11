@@ -72,7 +72,7 @@ This will be a class method so that it can be called without instantiating ```Ba
 - ```inputSed``` -- an instantiation of ```Sed```
 
 ####Results
-- Check to see if ```_work_wavelen``` matches ```inputSed._wavelen```.  If it does not, resample ```_wavelen``` and ```_sb``` to match the ```inputSed._wavelen``` and store the results in ```_work_wavelen```, ```_work_sb```.
+- Check to see if ```_work_wavelen``` matches ```inputSed._wavelen```.  If it does not, resample ```_wavelen``` and ```_sb``` to match ```inputSed._wavelen``` and store the results in ```_work_wavelen```, ```_work_sb```.
 - Integrate ```inputSed._fnu*_work_sb/_work_wavelen``` over ```_work_wavelen``` and divide by ```_ab_norm``` to calculate the AB flux of ```inputSed``` in this ```Bandpass```.
 - Return the resutling AB flux.  The units of this flux are `maggies`.
 
@@ -83,6 +83,16 @@ This will be a class method so that it can be called without instantiating ```Ba
 ####Results
 - Call ```calcFluxAB``` to get the AB flux of ```inputSed``` over this ```Bandpass```
 - Return -2.5*log_10(flux_AB), which is the AB magnitude of ```inputSed``` in this ```Bandpass```.
+
+###```calcADU(self, inputSed,photParams)```
+####Arguments
+- ```inputSed``` -- an instantiation of ```Sed```
+- ```photParams``` -- an instantiation of the ```PhotometricParameters``` class carrying data about the photometric response of the instrument.
+
+####Results
+- Check to see if ```_work_wavelen``` matches ```inut.Sed._wavelen```.  If it does not, resample ```_wavelen``` and ```_sb``` to match ```inputSed._wavelen``` and store the results in ```_work_wavelen```, ```_work_sb```.
+- Integrate ```inputSed._fnu/(_work_wavelen*_work_sb)``` over ```_work_wavelen``` and multiply by constants to calculate the number of ADU counts resulting from observing ```inputSed``` through the current ```Bandpass```.
+- Return the calculated number of ADU.
 
 #Sed class
 
