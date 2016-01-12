@@ -94,7 +94,7 @@ This will be a class method so that it can be called without instantiating ```Ba
 - Call ```calcFluxAB``` to get the AB flux of ```inputSed``` over this ```Bandpass```
 - Return -2.5*log_10(flux_AB), which is the AB magnitude of ```inputSed``` in this ```Bandpass```.
 
-###```calcADU(self, inputSed,photParams)```
+###```calcADU(self, inputSed, photParams)```
 ####Arguments
 - ```inputSed``` -- an instantiation of ```Sed```
 - ```photParams``` -- an instantiation of the ```PhotometricParameters``` class carrying data about the photometric response of the instrument.
