@@ -67,22 +67,24 @@ This will be a class method so that it can be called without instantiating ```Ba
 - Multiply the resutling ```Bandpass```es together.
 - Return the ```Bandpass``` that is the product of all of the ```Bandpass```es specified by the files in ```fileNameList```.
 
-###```_updateWorkArrays(self, input_wavelen)```
+###```_integrateWorkArrays(self, input_wavelen, input_fn)```
 ####Arguments
-- ```input_wavelen``` -- a wavelength grid in nanometers (i.e. a numpy array)
+- ```input_wavelen``` -- a numpy array defining wavelength grid in nanometers
+-```input_fn``` -- a numpy array defining a function on ```input_wavelen```
 
 ####Results
-- Check to see if ```self._work_wavelen``` matches ```input_wavelen```.  If it does, do nothing.
-- If ```self._work_wavelen``` does not match ```input_wavelen```, resample ```self._wavelen``` and ```self._sb``` to match ```input_wavelen``` and store the sresults in ```self._work_wavelen``` and ```self._work_sb```.
+- Define ```local_max = min(self._wavelen.max(), input_wavelen.max())```
+- Define ```local_min = max(self._wavelen.min(), input_wavelen.min())```
+- Check to see if ```self._work_wavelen``` is a numpy array with the same grid spacing as ```input_wavelen``` on the interval [```min```, ```max```].  If not, resample ```self._wavelen``` and ```self._sb``` to meet that criterion and store the results in ```self._work_wavelen``` and ```self._work_sb```.
+- Integrate ```input_fn*self._work_sb``` over ```self._work_wavelen```.  If there is a region of non-overlap between ```input_wavelen``` and ```self._work_wavelen```, check to see whether or not ```exists(self._work_sb, input_fn)>self._threshold``` in the region of non-overlap.  If ```True```, pad ```input_fn*self._work_sb``` with ```self._fill_value``` and raise a warning.  If ```False```, ignore the region of non-overlap (i.e. assume that ```self._work_sb*input_fn``` would be zero in the region of non-overlap, anyway).
+- Return the result of the integration.
 
 ###```calcFluxAB(self, inputSed)```
 ####Arguments
 - ```inputSed``` -- an instantiation of ```Sed```
 
 ####Results
-- Call ```self._updateWorkArrays(inputSed._wavelen)```
-- Integrate ```inputSed._fnu*_work_sb/_work_wavelen``` over ```_work_wavelen``` and divide by ```_ab_norm``` to calculate the AB flux of ```inputSed``` in this ```Bandpass```.
-- Return the resutling AB flux.  The units of this flux are `maggies`.
+- Call ```self._integrateWorkArrays(inputSed._wavelen, inputSed._fnu/inputSed._wavelen)```.  This will be the AB flux in units of ```maggies```
 
 ###```calcMagAB(self, inputSed)```
 ####Arguments
@@ -98,8 +100,7 @@ This will be a class method so that it can be called without instantiating ```Ba
 - ```photParams``` -- an instantiation of the ```PhotometricParameters``` class carrying data about the photometric response of the instrument.
 
 ####Results
-- Call ```self._updateWorkArrays(inputSed._wavelen)```
-- Integrate ```inputSed._fnu/(_work_wavelen*_work_sb)``` over ```_work_wavelen``` and multiply by constants to calculate the number of ADU counts resulting from observing ```inputSed``` through the current ```Bandpass```.
+- Call ```self._integrateWorkArrays(inputSed._wavelen, inputSed._fnu/inputSed._wavelen)```.  Mutliply by constants stored in ```photParams``` to convert to the number of ADU counts resulting from observing ```inputSed``` through the current ```Bandpass```.
 - Return the calculated number of ADU.
 
 #Sed class
