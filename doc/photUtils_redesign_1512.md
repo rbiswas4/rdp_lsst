@@ -4,10 +4,10 @@
 ##Member variables
 
 ###```_wavelen```
-The wavelength grid in nanometers.  Stored as a numpy array.
+A numpy array storing wavelength grid in nanometers.  This will be accessible through the ```@property``` ```wavelen```.
 
 ###```_sb```
-The throughput curve as a function of ```wavelen```.  This will be the probability of a photon being observed.  Stored as a numpy array.
+A numpy array storing the throughput curve as a function of ```wavelen```.  This will be the probability of a photon being observed.  This will be accessible through the ```@property``` ```sb```.
 
 ###```_ab_norm```
 This will be the normalization value applied when calculating AB fluxes.  It is the integral over ```wavelen`` of ```sb```/```wavelen``` multiplied by 3631 Janskies.  It will be set by ```__init___``` and reset whenever ```wavelen``` or ```sb``` change.
