@@ -104,6 +104,17 @@ This will be a class method so that it can be called without instantiating ```Ba
 - Call ```self._integrateWorkArrays(inputSed._wavelen, inputSed._fnu/inputSed._wavelen)```.  Mutliply by constants stored in ```photParams``` to convert to the number of ADU counts resulting from observing ```inputSed``` through the current ```Bandpass```.
 - Return the calculated number of ADU.
 
+
+###```calcZeroPoint(self, photParams)```
+Return the 'instrumental zero point', i.e. the magnitude of an F_nu-flat SED that produces one ADU per second.
+####Arguments
+- ```photParams``` -- an instantiation of the ```PhotometricParameters``` class carrying data about the photometric response of the instrument.
+
+####Results
+- Instantiate ```flatSed```, an ```Sed``` with a flat ```fnu```.
+- Call ```flatSed.normalizeADU(1, self)``` to normalize ```fnu``` to produce one ADU per second.
+- Return ```self.calcMagAB(flatSed)```
+
 #Sed class
 
 ##Member variables
