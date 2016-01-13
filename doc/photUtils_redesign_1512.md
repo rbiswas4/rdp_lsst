@@ -119,4 +119,14 @@ Return the 'instrumental zero point', i.e. the magnitude of an F_nu-flat SED tha
 
 ##Member variables
 
+###```_wavelen```
+A numpy array storing the wavelength grid in nanometers.   This will be accessible through the ```@property``` ```wavelen```.
+
+###```_flambda```
+A numpy array storing F_lambda in erg/cm^2/s/nm.  This will be accessible through the ```@property``` ```flambda```.
+
+###```_fnu```
+A numpy array storing F_nu in Jansky.  This will be accessible through the ```@property``` ```flambda```.
+
+
 ##Member methods
