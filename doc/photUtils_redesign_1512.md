@@ -130,3 +130,29 @@ A numpy array storing F_nu in Jansky.  This will be accessible through the ```@p
 
 
 ##Member methods
+
+###```__init___(self, wavelen=None, flambda=None, fnu=None, fileName=None)```
+
+####Arguments
+-```wavelen``` -- a numpy array specifying the wavelength grid in nanometers
+-```flambda``` -- a numpy array specifying F_lambda in ergs/cm^2/s/nm
+-```fnu``` -- a numpy array specifying F_nu in Janskys
+-```fileName``` -- the name of a text file specifying ```wavelen``` and ```flambda```
+
+####Results
+- Set ```self._wavelen = None```, ```self._flambda = None```, ```self._fnu = None```.
+- If ```flambda``` and ```fnu``` are both specified, raise an exception.
+- If ```wavelen``` is specified but both ```flambda``` and ```fnu``` are not specified, raise an exception.
+- If either ```flambda``` or ```fnu``` is specified by ```wavelen``` is not specified, raise an exception.
+- If ```fileName``` is specified and any of the other arguments are specified, raise an exception.
+- If ```wavelen``` is specified and ```flambda``` is specified, set ```self._wavelen = wavelen```, ```self._flambda = flambda``` and call ```self._calculateFnu()```.
+- If ```wavelen``` is specified and ```fnu``` is specified, set ```self._wavelen = wavelen```, ```self._fnu = fnu```, and call ```self._calculateFlambda()```.
+- If ```fileName``` is specified, open the specified file and read in ```self._wavelen``` and ```self._flambda```.  Call ```self._calculateFnu()```.
+
+###```_calculateFnu(self)```
+####Results
+- Calculate ```self._fnu``` from ```self._wavelen``` and ```self._flambda```.
+
+### ```_calculateFlambda(self)```
+####Results
+- Calculate ```self._flambda``` from ```self._wavelen``` and ```self._fnu```.
