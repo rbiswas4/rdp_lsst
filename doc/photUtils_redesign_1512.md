@@ -19,22 +19,32 @@ Initialized as ```None```.  Whenever ```wavelen``` needs to be resampled to matc
 Initialized as ```None```.  Whenever ```wavelen``` needs to be resampled to match an ```Sed```, the resampled ```sb``` will be stored here.  That way, the original throughput information is not lost.
 
 ###```_fill_value```
-If integrating this ```Bandpass``` over an ```Sed``` with a region of non-overlap in wavelength (either the ```Bandpass``` does not cover the ```Sed``` or vice-versa), what ```flux```-times- ```sb``` value will be used in the non-overlapping regions.  If ```fill_value``` is ```numpy.NaN```, then the resulting flux or magnitude for the whole ```Bandpass``` will be ```numpy.NaN```.  If ```fill_value``` is zero, then the resulting flux or magnitude will only include the region in wavelength space where the ```Bandpass``` and ```Sed``` do overlap; the non-overlapping region will be ignored.  ```fill_value``` will default to ```numpy.NaN```.
+If integrating this ```Bandpass``` over an ```Sed``` with a region of non-overlap in wavelength (either the ```Bandpass``` does not cover the ```Sed``` or vice-versa), what ```flux```-times- ```sb``` value will be used in the non-overlapping regions.  If ```fill_value``` is ```numpy.NaN```, then the resulting flux or magnitude for the whole ```Bandpass``` will be ```numpy.NaN```.  If ```fill_value``` is zero, then the resulting flux or magnitude will only include the region in wavelength space where the ```Bandpass``` and ```Sed``` do overlap; the non-overlapping region will be ignored.  ```fill_value``` will default to ```numpy.NaN```.  This will be accessible (and settable) through the ```@property``` ```fill_value```.
 
 ###```_threshold```
-The minimum value of ```sb``` that must be present at a value of ```wavelen``` for non-overlap to be considered a problem (i.e. if you are trying to integrate the ```Bandpass``` over an ```Sed``` with a different ```wavelen``` array).  Defaults to 10^-20
+The minimum value of ```sb``` that must be present at a value of ```wavelen``` for non-overlap to be considered a problem (i.e. if you are trying to integrate the ```Bandpass``` over an ```Sed``` with a different ```wavelen``` array).  Defaults to 10^-10.  This will be accessible (and settable) through the ```@property``` ```threshold```.
 
 
 ##Member methods
 
-###```__init___(self, wavelen, sb)```
+###```__init___(self, wavelen, sb, fill_value=numpy.NaN, threshold=1.0e-10)```
 
 ####Arguments
 - ```wavelen``` -- a numpy array containing the wavelength grid in nanometers
 - ```sb``` -- a numpy array containing the probability of a photon at a given wavelength being detected.
+- ```fill_value``` -- see above
+- ```threshold``` -- see above
 
 ####Results
+- Set ```self._wavelen = numpy.copy(wavelen)```
+- Set ```self._sb = numpy.copy(sb)```
+- Set ```self._fill_value = fill_value```
+- Set ```self._thredshold = threshold```
 - automatically set ```_ab_norm```
+
+###```__repr__(self)```
+####Results
+- Return ```'Bandpass(wavelen=%s, sb=%s, fill_value=%s, threshold=%s)' % (repr(self.wavelen), repr(self.sb), repr(self.fill_value), repr(self.threshold))'''
 
 ###```readThroughput(filename)```
 This will be a class method so that it can be called without instantiating ```Bandpass``` first.
@@ -145,6 +155,11 @@ A numpy array storing F_nu in Jansky.  This will be accessible through the ```@p
 - If either ```flambda``` or ```fnu``` is specified by ```wavelen``` is not specified, raise an exception.
 - If ```wavelen``` is specified and ```flambda``` is specified, set ```self._wavelen = numpy.copy(wavelen)```, ```self._flambda = numpy.copy(flambda)``` and call ```self._calculateFnu()```.
 - If ```wavelen``` is specified and ```fnu``` is specified, set ```self._wavelen = numpy.copy(wavelen)```, ```self._fnu = numpy.copy(fnu)```, and call ```self._calculateFlambda()```.
+
+
+###```__repr___(self)```
+####Results
+- Return ```'Sed(wavelen=%s, flambda=%s)' % (repr(self.wavelen), repr(self.flambda))```
 
 ###```readSedFlambda(fileName)```
 This will be a class method so that it can be called without instantiating Sed first.
