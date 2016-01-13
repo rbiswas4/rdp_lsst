@@ -211,7 +211,7 @@ Multply the SED either by a normalizing constant or by another Sed
 - If ```isinstance(other, Sed)``` call ```self._multiplyBySED(other)```
 - If not ```isinstance(other, Sed)``` call ```self._multiplyByConstant(other)```
 
-###```normalizeSed(self, mm, bp)```
+###```normalizeCurrentSed(self, mm, bp)```
 Normalize the current SED to have AB mangitude ```mm``` in Bandpass ```bp```.
 ####Arguments
 - ```mm``` -- a float.  The magnitude value desired in the ```Bandpass``` ```bp```.
