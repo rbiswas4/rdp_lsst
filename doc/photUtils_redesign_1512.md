@@ -177,7 +177,7 @@ This will be a class method so that it can be called without instantiating Sed f
 - ```wavelen``` -- a numpy array specifying the wavelength grid in nanometers
 
 ####Results
--If any of ```self._wavelen```, ```self._flambda```, ```self._fnu``` are not ```None```, raise an exception.
+- If any of ```self._wavelen```, ```self._flambda```, ```self._fnu``` are not ```None```, raise an exception (we do not want to overwrite a legitimate Sed)
 - Set ```self._wavelen = wavelen```.
 - Calculate ```self._fnu``` to giv e an Fnu-flat source.
 - Call ```self._calculateFlambda()```
