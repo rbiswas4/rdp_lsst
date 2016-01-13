@@ -210,3 +210,24 @@ Multply the SED either by a normalizing constant or by another Sed
 ####Results
 - If ```isinstance(other, Sed)``` call ```self._multiplyBySED(other)```
 - If not ```isinstance(other, Sed)``` call ```self._multiplyByConstant(other)```
+
+###```normalizeSed(self, mm, bp)```
+Normalize the current SED to have AB mangitude ```mm``` in Bandpass ```bp```.
+####Arguments
+- ```mm``` -- a float.  The magnitude value desired in the ```Bandpass``` ```bp```.
+- ```bp``` -- a ```Bandpass```
+
+####Results
+- Call ```m0 = bp.calcMagAB(self)``` to find the magnitude of the current SED in ```bp```.
+- Set ```self._flambda *= numpy.power(10.0, -0.4*(mm-m0))```
+- Call ```self._calculateFnu()```
+
+###```getNormalizedSed(self, mm, bp)```
+Return an SED that is identical to the current SED, except normalized to have magnitude ```mm``` in ```Bandpass``` ```bp```.
+####Arguments
+- ```mm``` -- a float.  The magnitude value desired in the ```Bandpass``` ```bp```.
+- ```bp``` -- a ```Bandpass```
+
+####Results
+- Call ```m0 = bp.calcMagAB(self)``` to find the magnitude of the current SED in ```bp```.
+- Return ```Sed(wavelen=self.wavelen, flambda=self.flambda*numpy.power(10.0, -0.4*(mm-m0)))```
