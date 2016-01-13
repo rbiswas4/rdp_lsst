@@ -131,23 +131,38 @@ A numpy array storing F_nu in Jansky.  This will be accessible through the ```@p
 
 ##Member methods
 
-###```__init___(self, wavelen=None, flambda=None, fnu=None, fileName=None)```
+###```__init___(self, wavelen=None, flambda=None, fnu=None)```
 
 ####Arguments
 -```wavelen``` -- a numpy array specifying the wavelength grid in nanometers
 -```flambda``` -- a numpy array specifying F_lambda in ergs/cm^2/s/nm
 -```fnu``` -- a numpy array specifying F_nu in Janskys
--```fileName``` -- the name of a text file specifying ```wavelen``` and ```flambda```
 
 ####Results
 - Set ```self._wavelen = None```, ```self._flambda = None```, ```self._fnu = None```.
 - If ```flambda``` and ```fnu``` are both specified, raise an exception.
 - If ```wavelen``` is specified but both ```flambda``` and ```fnu``` are not specified, raise an exception.
 - If either ```flambda``` or ```fnu``` is specified by ```wavelen``` is not specified, raise an exception.
-- If ```fileName``` is specified and any of the other arguments are specified, raise an exception.
-- If ```wavelen``` is specified and ```flambda``` is specified, set ```self._wavelen = wavelen```, ```self._flambda = flambda``` and call ```self._calculateFnu()```.
-- If ```wavelen``` is specified and ```fnu``` is specified, set ```self._wavelen = wavelen```, ```self._fnu = fnu```, and call ```self._calculateFlambda()```.
-- If ```fileName``` is specified, open the specified file and read in ```self._wavelen``` and ```self._flambda```.  Call ```self._calculateFnu()```.
+- If ```wavelen``` is specified and ```flambda``` is specified, set ```self._wavelen = numpy.copy(wavelen)```, ```self._flambda = numpy.copy(flambda)``` and call ```self._calculateFnu()```.
+- If ```wavelen``` is specified and ```fnu``` is specified, set ```self._wavelen = numpy.copy(wavelen)```, ```self._fnu = numpy.copy(fnu)```, and call ```self._calculateFlambda()```.
+
+###```readSedFlambda(fileName)```
+This will be a class method so that it can be called without instantiating Sed first.
+####Arguments
+-```fileName``` -- The name of a text file containging two columns: the wavelength in nanometers and F_lambda in ergs/cm^2/s/nm
+
+####Results
+- Open the specified file and read in ```self._wavelen``` and ```self._flambda```.
+- Call ```self._calculateFnu()```.
+
+###```readSedFnu(fileName)```
+This will be a class method so that it can be called without instantiating Sed first.
+####Arguments
+-```fileName``` -- The name of a text file containing two columns: the wavelength in nanometers and F_nu in Janskys.
+
+####Results
+- Open the specified file and read in ```self._wavelen``` and ```self._fnu```.
+- Call ```self._calculateFlambda()```.
 
 ###```_calculateFnu(self)```
 ####Results
@@ -156,3 +171,42 @@ A numpy array storing F_nu in Jansky.  This will be accessible through the ```@p
 ### ```_calculateFlambda(self)```
 ####Results
 - Calculate ```self._flambda``` from ```self._wavelen``` and ```self._fnu```.
+
+###```setFlatFnuSED(self, wavelen)```
+####Arguments
+-```wavelen``` -- a numpy array specifying the wavelength grid in nanometers
+
+####Results
+-If any of ```self._wavelen```, ```self._flambda```, ```self._fnu``` are not ```None```, raise an exception.
+-Set ```self._wavelen = wavelen```.
+-Calculate ```self._fnu``` to giv e an Fnu-flat source.
+-Call ```self._calculateFlambda()```
+
+###```_mutiplyBySED(self, other)```
+Multipy the SED by another SED
+####Arguments
+-```other``` -- another Sed
+
+####Results
+-Create  ```f1 = numpy.copy(self.flambda)```, ```f2 = numpy.copy(other.flambda)```.
+-Create ```new_wavelen```: a numpy array representing the finest wavelength grid that can accommodate the overlap between ```self.wavelen``` and ```other.wavelen```.
+-Resample ```f1``` and ```f2``` onto ```new_wavelen```.
+-Return ```Sed(wavelen=new_wavelen, flambda=f1*f2)```
+
+###```_multiplyByConstant(self, cc)```
+Multiply the SED by normalizing constant
+####Arguments
+-```cc``` -- a normalizing constant
+
+####Results
+-If not ```isinstance(cc, int) or isinstance(cc, float) or isinstance(cc, numpy.float)``` raise an exception.
+-Return ```Sed(wavelen=self.wavelen, flambda=cc*self.flambda)```
+
+###```__mul__(self, other)```
+Multply the SED either by a normalizing constant or by another Sed
+####Arguments
+-```other``` -- either a normalizing constant or another Sed
+
+####Results
+-If ```isinstance(other, Sed)``` call ```self._multiplyBySED(other)```
+-If not ```isinstance(other, Sed)``` call ```self._multiplyByConstant(other)```
