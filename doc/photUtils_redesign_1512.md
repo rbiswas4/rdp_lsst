@@ -84,7 +84,7 @@ This will be a class method so that it can be called without instantiating ```Ba
 - ```inputSed``` -- an instantiation of ```Sed```
 
 ####Results
-- Call ```self._integrateWorkArrays(inputSed._wavelen, inputSed._fnu/inputSed._wavelen)```.  This will be the AB flux in units of ```maggies```
+- Call ```self._integrateWorkArrays(inputSed._wavelen, inputSed._fnu/inputSed._wavelen)```.  Divide by ```_ab_norm```.  Return the result.  This will be the AB flux in units of ```maggies```
 
 ###```calcMagAB(self, inputSed)```
 ####Arguments
