@@ -231,3 +231,16 @@ Return an SED that is identical to the current SED, except normalized to have ma
 ####Results
 - Call ```m0 = bp.calcMagAB(self)``` to find the magnitude of the current SED in ```bp```.
 - Return ```Sed(wavelen=self.wavelen, flambda=self.flambda*numpy.power(10.0, -0.4*(mm-m0)))```
+
+
+###```applyRedshift(self, zz, K_correct=True)```
+Return an ```Sed``` corresponding to the current ```Sed``` redshifted by ```zz```
+####Arguments
+- ```zz``` -- a float representing the redshift
+- ```K_correct``` -- a boolean indicating whether or not to apply the K correction
+
+####Results
+- If ```zz>0``` and ```K_correct``` is ```True``` return ```Sed(wavelen=self.wavelen*(1.0+zz), flambda=self.flambda/(1.0+zz))```
+- If ```zz>0``` and ```K_correct``` is ```False``` return ```Sed(wavelen=wavelen.self.wavelen*(1.0+zz), flambda=self.flambda)```
+- If ```zz<0``` and ```K_correct``` is ```True``` return ```Sed(wavelen=self.wavelen/(1.0-zz), flambda=self.flambda*(1.0-zz))```
+- If ```zz<0``` and ```K_correct``` is ```False``` return ```Sed(wavelen=self.wavelen/(1.0-zz), flambda=self.flambda)```
