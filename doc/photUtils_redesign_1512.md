@@ -87,14 +87,14 @@ This will be a class method so that it can be called without instantiating ```Ba
 
 ###```_integrateWorkArrays(self, input_wavelen, input_fn)```
 ####Arguments
-- ```input_wavelen``` -- a numpy array defining wavelength grid in nanometers
+- ```input_wavelen``` -- a numpy array defining a wavelength grid in nanometers
 - ```input_fn``` -- a numpy array defining a function on ```input_wavelen```
 
 ####Results
 - Define ```local_max = min(self._wavelen.max(), input_wavelen.max())```
 - Define ```local_min = max(self._wavelen.min(), input_wavelen.min())```
 - Check to see if ```self._work_wavelen``` is a numpy array with the same grid spacing as ```input_wavelen``` on the interval [```min```, ```max```].  If not, resample ```self._wavelen``` and ```self._sb``` to meet that criterion and store the results in ```self._work_wavelen``` and ```self._work_sb```.
-- Integrate ```input_fn*self._work_sb``` over ```self._work_wavelen```.  If there is a region of non-overlap between ```input_wavelen``` and ```self._work_wavelen```, check to see whether or not ```exists(self._work_sb, input_fn)>self._threshold``` in the region of non-overlap.  If ```True```, pad ```input_fn*self._work_sb``` with ```self._fill_value``` and raise a warning.  If ```False```, ignore the region of non-overlap (i.e. assume that ```self._work_sb*input_fn``` would be zero in the region of non-overlap, anyway).
+- Integrate ```input_fn*self._work_sb``` over ```self._work_wavelen```.  If there is a region of non-overlap between ```input_wavelen``` and ```self._work_wavelen```, check to see whether or not ```exists(abs(self._work_sb)/abs(self._work_sb.max()), abs(input_fn)/abs(input_fn.max()))>self._threshold``` in the region of non-overlap.  If ```True```, pad ```input_fn*self._work_sb``` with ```self._fill_value``` and raise a warning.  If ```False```, ignore the region of non-overlap (i.e. assume that ```self._work_sb*input_fn``` would be zero in the region of non-overlap, anyway).
 - Return the result of the integration.
 
 ###```calcFluxAB(self, inputSed)```
