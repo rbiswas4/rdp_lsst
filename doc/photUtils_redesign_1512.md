@@ -159,7 +159,7 @@ A numpy array storing F_nu in Jansky.  This will be accessible through the ```@p
 - Set ```self._wavelen = None```, ```self._flambda = None```, ```self._fnu = None```.
 - If ```flambda``` and ```fnu``` are both specified, raise an exception.
 - If ```wavelen``` is specified but both ```flambda``` and ```fnu``` are not specified, raise an exception.
-- If either ```flambda``` or ```fnu``` is specified by ```wavelen``` is not specified, raise an exception.
+- If either ```flambda``` or ```fnu``` is specified but ```wavelen``` is not specified, raise an exception.
 - If ```wavelen``` is specified and ```flambda``` is specified, set ```self._wavelen = numpy.copy(wavelen)```, ```self._flambda = numpy.copy(flambda)``` and call ```self._calculateFnu()```.
 - If ```wavelen``` is specified and ```fnu``` is specified, set ```self._wavelen = numpy.copy(wavelen)```, ```self._fnu = numpy.copy(fnu)```, and call ```self._calculateFlambda()```.
 
