@@ -194,15 +194,11 @@ This will be a class method so that it can be called without instantiating Sed f
 ####Results
 - Calculate ```self._flambda``` from ```self._wavelen``` and ```self._fnu```.
 
-###```setFlatFnuSED(self, wavelen)```
-####Arguments
-- ```wavelen``` -- a numpy array specifying the wavelength grid in nanometers
-
+###```flatFnuSED()```
+This will be a class method so you do not have to instantiate ```Sed``` before calling.
 ####Results
-- If any of ```self._wavelen```, ```self._flambda```, ```self._fnu``` are not ```None```, raise an exception (we do not want to overwrite a legitimate Sed)
-- Set ```self._wavelen = wavelen```.
-- Calculate ```self._fnu``` to giv e an Fnu-flat source.
-- Call ```self._calculateFlambda()```
+- Create ```wavelen``` and ```fnu``` corresponding to a flat F_nu SED
+- Return ```Sed(wavelen=wavelen, fnu=fnu)```
 
 ###```_mutiplyBySED(self, other)```
 Multipy the SED by another SED
