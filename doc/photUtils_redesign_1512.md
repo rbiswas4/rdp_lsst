@@ -40,7 +40,14 @@ If a region of non-overlap is present (see above), ```Bandpass``` will compare t
 - Set ```self._sb = numpy.copy(sb)```
 - Set ```self._fill_value = fill_value```
 - Set ```self._threshold = threshold```
-- automatically set ```_ab_norm```
+- Call ```self._calcABNorm()```
+
+###```_calcABNorm(self)```
+Calculate the AB flux normalization
+####Results
+- Integrate ```3631*self._sb/self._wavelen``` over ```self._wavelen```
+- Store the resulting value in ```self._ab_norm```
+
 
 ###```__repr__(self)```
 ####Results
