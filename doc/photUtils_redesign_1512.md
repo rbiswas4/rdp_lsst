@@ -22,7 +22,7 @@ Initialized as ```None```.  Whenever ```wavelen``` needs to be resampled to matc
 If integrating this ```Bandpass``` over an ```Sed``` with a region of non-overlap in wavelength (either the ```Bandpass``` does not cover the ```Sed``` or vice-versa), this value will be used to fill in the ```sb*flux``` (or whatever function is being integrated) in the region of non-overlap.  If ```fill_value``` is ```numpy.NaN```, then the resulting flux or magnitude for the whole ```Bandpass``` will be ```numpy.NaN```.  If ```fill_value``` is zero, then the resulting flux or magnitude will only include the region in wavelength space where the ```Bandpass``` and ```Sed``` do overlap; the non-overlapping region will be ignored.  ```fill_value``` will default to ```numpy.NaN```.  This will be accessible (and settable) through the ```@property``` ```fill_value```.
 
 ###```_threshold```
-The minimum value of ```sb``` that must be present at a value of ```wavelen``` for non-overlap to be considered a problem (i.e. if you are trying to integrate the ```Bandpass``` over an ```Sed``` with a different ```wavelen``` array).  Defaults to 10^-10.  This will be accessible (and settable) through the ```@property``` ```threshold```.
+If a region of non-overlap is present (see above), ```Bandpass``` will compare the absolute value of the existing function (either ```self._sb``` or a flux-like function from an ```Sed```) to the maximum value of that function.  If the resulting ratio is less than ```_threshold```, the region of non-overlap will be treated as unimportant.  This will be accessible (and settable) through the ```@property``` ```threshold```.
 
 
 ##Member methods
