@@ -174,8 +174,8 @@ This will be a class method so that it can be called without instantiating Sed f
 - ```fileName``` -- The name of a text file containging two columns: the wavelength in nanometers and F_lambda in ergs/cm^2/s/nm
 
 ####Results
-- Open the specified file and read in ```self._wavelen``` and ```self._flambda```.
-- Call ```self._calculateFnu()```.
+- Open the specified file and read in ```wavelen``` and ```flambda```.
+- Return ```Sed(wavelen=wavelen, flambda=flambda)```.
 
 ###```readSedFnu(fileName)```
 This will be a class method so that it can be called without instantiating Sed first.
@@ -183,8 +183,8 @@ This will be a class method so that it can be called without instantiating Sed f
 - ```fileName``` -- The name of a text file containing two columns: the wavelength in nanometers and F_nu in Janskys.
 
 ####Results
-- Open the specified file and read in ```self._wavelen``` and ```self._fnu```.
-- Call ```self._calculateFlambda()```.
+- Open the specified file and read in ```wavelen``` and ```fnu```.
+- Return ```Sed(wavelen=wavelen, fnu=fnu)```.
 
 ###```_calculateFnu(self)```
 ####Results
