@@ -39,7 +39,7 @@ If a region of non-overlap is present (see above), ```Bandpass``` will compare t
 - Set ```self._wavelen = numpy.copy(wavelen)```
 - Set ```self._sb = numpy.copy(sb)```
 - Set ```self._fill_value = fill_value```
-- Set ```self._thredshold = threshold```
+- Set ```self._threshold = threshold```
 - automatically set ```_ab_norm```
 
 ###```__repr__(self)```
