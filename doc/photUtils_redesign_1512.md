@@ -51,7 +51,7 @@ Calculate the AB flux normalization
 
 ###```__repr__(self)```
 ####Results
-- Return ```'Bandpass(wavelen=%s, sb=%s, fill_value=%s, threshold=%s)' % (repr(self.wavelen), repr(self.sb), repr(self.fill_value), repr(self.threshold))'''
+- Return ```'Bandpass(wavelen=%s, sb=%s, fill_value=%s, threshold=%s)' % (repr(self.wavelen), repr(self.sb), repr(self.fill_value), repr(self.threshold))```
 
 ###```readThroughput(filename)```
 This will be a class method so that it can be called without instantiating ```Bandpass``` first.
