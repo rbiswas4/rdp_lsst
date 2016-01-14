@@ -10,7 +10,7 @@ A numpy array storing wavelength grid in nanometers.  This will be accessible th
 A numpy array storing the throughput curve as a function of ```wavelen```.  This will be the probability of a photon being observed.  This will be accessible through the ```@property``` ```sb```.
 
 ###```_ab_norm```
-This will be the normalization value applied when calculating AB fluxes.  It is the integral over ```wavelen`` of ```sb```/```wavelen``` multiplied by 3631 Janskies.  It will be set by ```__init___``` and reset whenever ```wavelen``` or ```sb``` change.
+This will be the normalization value applied when calculating AB fluxes.  It is the integral over ```wavelen``` of ```sb```/```wavelen``` multiplied by 3631 Janskies.  It will be set by ```__init___``` and reset whenever ```wavelen``` or ```sb``` change.
 
 ###```_work_wavelen```
 Initialized as ```None```.  Whenever ```wavelen``` needs to be resampled to match an ```Sed```, the resampled ```wavelen``` will be stored here.  That way, the original throughput information is not lost.
