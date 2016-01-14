@@ -129,8 +129,9 @@ Return the 'instrumental zero point', i.e. the magnitude of an F_nu-flat SED tha
 
 ####Results
 - Instantiate ```flatSed```, an ```Sed``` with a flat ```fnu```.
-- Call ```flatSed.normalizeADU(1, self)``` to normalize ```fnu``` to produce one ADU per second.
-- Return ```self.calcMagAB(flatSed)```
+- Calculate ```adu0 = self.calcAdu(flatSed)```
+- Instantiate ```new_sed = Sed(wavelen=flatSed.wavelen, fnu=flatSed.fnu/adu0)```
+- Return ```self.calcMagAB(new_sed)```
 
 #Sed class
 
