@@ -263,3 +263,16 @@ Return an ```Sed``` corresponding to the current ```Sed``` redshifted by ```zz``
 - If ```zz>0``` and ```K_correct``` is ```False``` return ```Sed(wavelen=wavelen.self.wavelen*(1.0+zz), flambda=self.flambda)```
 - If ```zz<0``` and ```K_correct``` is ```True``` return ```Sed(wavelen=self.wavelen/(1.0-zz), flambda=self.flambda*(1.0-zz))```
 - If ```zz<0``` and ```K_correct``` is ```False``` return ```Sed(wavelen=self.wavelen/(1.0-zz), flambda=self.flambda)```
+
+# Use Cases:
+
+## Unnormalized Bandpasses
+Very often the throughput files are unnormalized, and each observation is accompanied with a 'zero point' and a magnitude system (usually the same). The zero point is used to set the normalization. The `BandPass.fluxAB` function would be equal to the flux with zeropoint 0, and magsys 'ab'. Can we generalize that function to take in these additional optional parameters?
+
+Also, as I understand it, an unnormalized ` -Sb` would still give correct results. So, maybe it should be defined as being proportional to the probability?
+ 
+## Lists of Similarly sampled Seds with different observing conditions
+Consider finding the flux/ flux uncertainty of the same object (transient or not) in a list of observations. If the object is a static object its Sed will be the same, but the bands might be different, and the fivesigmadepth is different leading to different values of flux uncertainty. For transients like SN, the seds will be different, but sampled in the same way. Is there a recommeded way of using these procedures so that the checks/work-arrays can be done once for such SEDs ?
+
+## List of potentially differently sampled Seds with the same observing conditions:
+As in an instance Catalog. Here the thing that is the same is the fivesigma depth. 
